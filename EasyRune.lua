@@ -23,9 +23,9 @@ function UpdateButtons()
     end
     local buttons = EngravingFrame.scrollFrame.buttons
     for _, button in ipairs(buttons) do
-        if button and button.skillLineAbilityID then
+        if button and button:IsShown() and button.skillLineAbilityID and rune_by_id[button.skillLineAbilityID] then
             local abilityID = button.skillLineAbilityID
-            local equipmentSlot = rune_by_id[abilityID].equipmentSlot
+            local equipmentSlot = rune_by_id[button.skillLineAbilityID].equipmentSlot
             button:SetScript("OnClick", function(_, mouseButton)
                 RuneButtonOnClick(mouseButton, abilityID, equipmentSlot)
             end)
