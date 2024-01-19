@@ -1,0 +1,5 @@
+## Interface: 100205
+## Title: Easy Rune
+## Notes: Makes selecting your runes easy
+
+EasyRune.lua
