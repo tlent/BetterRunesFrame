@@ -1,7 +1,7 @@
 RUNE_BUTTON_HEIGHT = 40;
 RUNE_HEADER_BUTTON_HEIGHT = 23;
 
-function RuneButtonOnClick(mouseButton, abilityID, equipmentSlot)
+local function RuneButtonOnClick(mouseButton, abilityID, equipmentSlot)
     C_Engraving.CastRune(abilityID);
 
     if mouseButton == "RightButton" then
@@ -18,7 +18,24 @@ function RuneButtonOnClick(mouseButton, abilityID, equipmentSlot)
     end
 end
 
-function UpdateButtons()
+local function GetEquippedRunes()
+    local equippedRunes = {};
+    local equippedFilterInitialllyEnabled = C_Engraving.IsEquippedFilterEnabled();
+    C_Engraving.EnableEquippedFilter(true);
+
+    local categories = C_Engraving.GetRuneCategories(true, true);
+    for _, category in ipairs(categories) do
+        local runes = C_Engraving.GetRunesForCategory(category, true);
+        for _, rune in ipairs(runes) do
+            equippedRunes[rune.skillLineAbilityID] = true;
+        end
+    end
+
+    C_Engraving.EnableEquippedFilter(equippedFilterInitialllyEnabled);
+    return equippedRunes;
+end
+
+local function UpdateButtons()
     local scrollFrame = EngravingFrame.scrollFrame;
     local buttons = scrollFrame.buttons;
     local offset = HybridScrollFrame_GetOffset(scrollFrame);
@@ -56,6 +73,7 @@ function UpdateButtons()
         end
 
         local runes = C_Engraving.GetRunesForCategory(category, true);
+        local equippedRunes = GetEquippedRunes();
         numRunes = numRunes + #runes;
         for runeIndex, rune in ipairs(runes) do
             if currentOffset < offset then
@@ -71,6 +89,11 @@ function UpdateButtons()
                     button.name:Hide();
                     button.typeName:Hide();
                     button:SetWidth(RUNE_BUTTON_HEIGHT);
+                    if equippedRunes[abilityID] then
+                        button.checkedTexture:Show();
+                    else
+                        button.checkedTexture:Hide();
+                    end
                     button:ClearAllPoints();
                     if runeIndex % 4 == 1 then
                         button:SetPoint("TOPLEFT", buttons[prevRowStart], "BOTTOMLEFT");
@@ -107,15 +130,30 @@ local function AddMoreButtons()
     end
 end
 
+local function AddCheckedTextures()
+    local buttons = EngravingFrame.scrollFrame.buttons;
+    for _, button in ipairs(buttons) do
+        button.checkedTexture = button:CreateTexture(nil, "OVERLAY");
+        button.checkedTexture:SetAllPoints(button);
+        button.checkedTexture:SetTexture("Interface\\Buttons\\CheckButtonHilight");
+        button.checkedTexture:SetBlendMode("ADD");
+        button.checkedTexture:Hide();
+    end
+end
+
 local function EventHandler(self, event, addonName)
     if event == "ADDON_LOADED" and addonName == "Blizzard_EngravingUI" then
-        AddMoreButtons()
+        AddMoreButtons();
+        AddCheckedTextures();
         hooksecurefunc("EngravingFrame_UpdateRuneList", UpdateButtons);
+    elseif event == "RUNE_UPDATED" then
+        UpdateButtons();
     end
 end
 
 local frame = CreateFrame("Frame");
 frame:RegisterEvent("ADDON_LOADED");
+frame:RegisterEvent("RUNE_UPDATED");
 frame:SetScript("OnEvent", EventHandler);
 
 
