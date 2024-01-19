@@ -21,9 +21,18 @@ function UpdateButtons()
             rune_by_id[rune.skillLineAbilityID] = rune
         end
     end
+
     local buttons = EngravingFrame.scrollFrame.buttons
+    -- workaround for button 13 never being hidden but causing issues
+    if C_Engraving.IsEquippedFilterEnabled() then
+        local button = buttons[13]
+        if button then
+            button:Hide()
+        end
+    end
+
     for _, button in ipairs(buttons) do
-        if button and button:IsShown() and button.skillLineAbilityID and rune_by_id[button.skillLineAbilityID] then
+        if button and button:IsShown() then
             local abilityID = button.skillLineAbilityID
             local equipmentSlot = rune_by_id[button.skillLineAbilityID].equipmentSlot
             button:SetScript("OnClick", function(_, mouseButton)
