@@ -147,7 +147,9 @@ local function EventHandler(self, event, addonName)
         AddCheckedTextures();
         hooksecurefunc("EngravingFrame_UpdateRuneList", UpdateButtons);
     elseif event == "RUNE_UPDATED" then
-        UpdateButtons();
+        if EngravingFrame then
+            UpdateButtons();
+        end
     end
 end
 
