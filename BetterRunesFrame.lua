@@ -40,6 +40,7 @@ local function UpdateButtons()
     local buttons = scrollFrame.buttons;
     local offset = HybridScrollFrame_GetOffset(scrollFrame);
     EngravingFrame_HideAllHeaders();
+    local equippedRunes = GetEquippedRunes();
 
     local categories = C_Engraving.GetRuneCategories(true, true);
     local numHeaders = #categories;
@@ -73,7 +74,6 @@ local function UpdateButtons()
         end
 
         local runes = C_Engraving.GetRunesForCategory(category, true);
-        local equippedRunes = GetEquippedRunes();
         numRunes = numRunes + #runes;
         for runeIndex, rune in ipairs(runes) do
             if currentOffset < offset then
@@ -81,15 +81,13 @@ local function UpdateButtons()
 			else
 				local button = buttons[currentButton];
 				if button then
-                    local abilityID = button.skillLineAbilityID;
-                    local equipmentSlot = rune.equipmentSlot;
                     button:SetScript("OnClick", function(_, mouseButton)
-                        RuneButtonOnClick(mouseButton, abilityID, equipmentSlot);
+                        RuneButtonOnClick(mouseButton, rune.skillLineAbilityID, rune.equipmentSlot);
                     end);
                     button.name:Hide();
                     button.typeName:Hide();
                     button:SetWidth(RUNE_BUTTON_HEIGHT);
-                    if equippedRunes[abilityID] then
+                    if equippedRunes[rune.skillLineAbilityID] then
                         button.checkedTexture:Show();
                     else
                         button.checkedTexture:Hide();
