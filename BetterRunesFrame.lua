@@ -87,6 +87,10 @@ local function UpdateButtons()
                     button.name:Hide();
                     button.typeName:Hide();
                     button:SetWidth(RUNE_BUTTON_HEIGHT);
+                    button.disabledBG:Hide();
+                    button.selectedTex:ClearAllPoints();
+                    button.selectedTex:SetAllPoints(button);
+                    button.selectedTex:Hide();
                     if equippedRunes[rune.skillLineAbilityID] then
                         button.checkedTexture:Show();
                     else
