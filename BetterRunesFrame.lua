@@ -125,6 +125,9 @@ local function AddMoreButtons()
     for i = #buttons, 15 do
         local button = CreateFrame("BUTTON", buttonName and (buttonName .. 1) or nil, scrollFrame.scrollChild,
             "RuneSpellButtonTemplate");
+        button.disabledBG:Hide();
+        button.selectedTex:Hide();
+        button:Hide();
         tinsert(buttons, button);
     end
 end
