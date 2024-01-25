@@ -88,6 +88,7 @@ local function UpdateButtons()
                     button.typeName:Hide();
                     button:SetWidth(RUNE_BUTTON_HEIGHT);
                     button.disabledBG:Hide();
+                    button.selectedTex:SetWidth(RUNE_BUTTON_HEIGHT);
                     button.selectedTex:ClearAllPoints();
                     button.selectedTex:SetAllPoints(button);
                     button.selectedTex:Hide();
