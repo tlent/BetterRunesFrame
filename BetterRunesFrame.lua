@@ -57,19 +57,19 @@ local function UpdateButtons()
         else
             local button = buttons[currentButton];
             if button then
-                header = _G["EngravingFrameHeader"..currentHeader];
-				if header then
+                header = _G["EngravingFrameHeader" .. currentHeader];
+                if header then
                     if prevRowStart > 1 then
                         button:ClearAllPoints();
                         button:SetPoint("TOPLEFT", buttons[prevRowStart], "BOTTOMLEFT");
                     end
                     prevRowStart = currentButton;
                     header:ClearAllPoints();
-					header:SetPoint("BOTTOMLEFT", button, 0 , 0);
+                    header:SetPoint("BOTTOMLEFT", button, 0, 0);
                     header:Show();
-					currentHeader = currentHeader + 1;
-					currentButton = currentButton + 1;
-				end
+                    currentHeader = currentHeader + 1;
+                    currentButton = currentButton + 1;
+                end
             end
         end
 
@@ -77,10 +77,10 @@ local function UpdateButtons()
         numRunes = numRunes + #runes;
         for runeIndex, rune in ipairs(runes) do
             if currentOffset < offset then
-				currentOffset = currentOffset + 1;
-			else
-				local button = buttons[currentButton];
-				if button then
+                currentOffset = currentOffset + 1;
+            else
+                local button = buttons[currentButton];
+                if button then
                     button:SetScript("OnClick", function(_, mouseButton)
                         RuneButtonOnClick(mouseButton, rune.skillLineAbilityID, rune.equipmentSlot);
                     end);
@@ -100,9 +100,9 @@ local function UpdateButtons()
                         button:SetPoint("LEFT", buttons[currentButton - 1], "RIGHT");
                     end
                     button:Show();
-					currentButton = currentButton + 1;
-				end
-			end
+                    currentButton = currentButton + 1;
+                end
+            end
         end
     end
 
@@ -113,7 +113,7 @@ local function UpdateButtons()
 
     local totalHeight = math.floor(numRunes / 4) * RUNE_BUTTON_HEIGHT;
     totalHeight = totalHeight + (numHeaders * RUNE_HEADER_BUTTON_HEIGHT);
-    HybridScrollFrame_Update(scrollFrame, totalHeight+10, 348);
+    HybridScrollFrame_Update(scrollFrame, totalHeight + 10, 348);
 end
 
 local function AddMoreButtons()
@@ -123,7 +123,8 @@ local function AddMoreButtons()
     local buttonName = parentName and (parentName .. "Button") or nil;
 
     for i = #buttons, 15 do
-        local button = CreateFrame("BUTTON", buttonName and (buttonName..1) or nil, scrollFrame.scrollChild, "RuneSpellButtonTemplate");
+        local button = CreateFrame("BUTTON", buttonName and (buttonName .. 1) or nil, scrollFrame.scrollChild,
+            "RuneSpellButtonTemplate");
         tinsert(buttons, button);
     end
 end
@@ -155,5 +156,4 @@ local frame = CreateFrame("Frame");
 frame:RegisterEvent("ADDON_LOADED");
 frame:RegisterEvent("RUNE_UPDATED");
 frame:SetScript("OnEvent", EventHandler);
-
 
