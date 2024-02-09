@@ -127,7 +127,7 @@ local function AddMoreButtons()
     local parentName = scrollFrame:GetName();
     local buttonName = parentName and (parentName .. "Button") or nil;
 
-    for i = #buttons, 15 do
+    for i = #buttons, 25 do
         local button = CreateFrame("BUTTON", buttonName and (buttonName .. 1) or nil, scrollFrame.scrollChild,
             "RuneSpellButtonTemplate");
         button.disabledBG:Hide();
