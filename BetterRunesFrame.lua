@@ -45,7 +45,7 @@ local function UpdateButtons()
     local categories = C_Engraving.GetRuneCategories(true, true);
     local numHeaders = #categories;
 
-    local numRunes = 0;
+    local numRows = 0;
     local currentOffset = 0;
     local currentHeader = 1;
     local currentButton = 1;
@@ -74,7 +74,6 @@ local function UpdateButtons()
         end
 
         local runes = C_Engraving.GetRunesForCategory(category, true);
-        numRunes = numRunes + #runes;
         for runeIndex, rune in ipairs(runes) do
             if currentOffset < offset then
                 currentOffset = currentOffset + 1;
@@ -101,6 +100,7 @@ local function UpdateButtons()
                     if runeIndex % 4 == 1 then
                         button:SetPoint("TOPLEFT", buttons[prevRowStart], "BOTTOMLEFT");
                         prevRowStart = currentButton;
+                        numRows = numRows + 1;
                     else
                         button:SetPoint("LEFT", buttons[currentButton - 1], "RIGHT");
                     end
@@ -116,9 +116,9 @@ local function UpdateButtons()
         currentButton = currentButton + 1;
     end
 
-    local totalHeight = math.floor(numRunes / 4) * RUNE_BUTTON_HEIGHT;
+    local totalHeight = numRows * RUNE_BUTTON_HEIGHT;
     totalHeight = totalHeight + (numHeaders * RUNE_HEADER_BUTTON_HEIGHT);
-    HybridScrollFrame_Update(scrollFrame, totalHeight + 10, 348);
+    HybridScrollFrame_Update(scrollFrame, totalHeight, 348);
 end
 
 local function AddMoreButtons()
